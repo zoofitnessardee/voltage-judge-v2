@@ -70,8 +70,38 @@ let burpeeLowSince = 0;
 let burpeeOverheadSince = 0;
 
 function judgeBurpee(p, now) {
-  // Burpee movement detection will be added here.
-  // The existing Thruster Judge remains unchanged.
+  const side = $('viewMode').value === 'side';
+
+  if (!side) {
+    $('tracking').textContent = 'RAM BURPEE: Select side-facing view';
+    return;
+  }
+
+  const left = [11, 13, 15, 23, 25, 27];
+  const right = [12, 14, 16, 24, 26, 28];
+
+  const ids = visible(p, left) ? left :
+              visible(p, right) ? right : null;
+
+  if (!ids) {
+    $('tracking').textContent = 'RAM BURPEE: Full body not visible';
+    return;
+  }
+
+  const [sh, el, wr, hip, knee, ankle] = ids.map(i => p[i]);
+
+  const shoulderHipGap = Math.abs(sh.y - hip.y);
+  const hipAnkleGap = Math.abs(hip.y - ankle.y);
+
+  const horizontal =
+    shoulderHipGap < 0.18 &&
+    hipAnkleGap < 0.22;
+
+  if (horizontal) {
+    $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
+  } else {
+    $('tracking').textContent = 'RAM BURPEE: Move into bottom position';
+  }
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
