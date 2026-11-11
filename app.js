@@ -110,13 +110,41 @@ const overhead = standing && leftArmOK && rightArmOK;
     shoulderHipGap < 0.18 &&
     hipAnkleGap < 0.22;
 
-  if (horizontal) {
+  if (!session) {
+  burpeePhase = 'ready';
+  burpeeLowSince = 0;
+  burpeeOverheadSince = 0;
+}
+
+if (horizontal) {
   $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
+
+  if (session && burpeePhase === 'ready') {
+    if (!burpeeLowSince) burpeeLowSince = now;
+
+    if (now - burpeeLowSince > 150) {
+      burpeePhase = 'low';
+      burpeeLowSince = 0;
+    }
+  }
 } else if (overhead) {
   $('tracking').textContent = 'RAM BURPEE: OVERHEAD DETECTED';
+
+  if (session && burpeePhase === 'low') {
+    if (!burpeeOverheadSince) burpeeOverheadSince = now;
+
+    if (now - burpeeOverheadSince > 150) {
+      burpeePhase = 'top';
+      burpeeOverheadSince = 0;
+      count();
+    }
+  }
 } else {
   $('tracking').textContent = 'RAM BURPEE: Move into bottom position';
 }
+
+if (!horizontal) burpeeLowSince = 0;
+if (!overhead) burpeeOverheadSince = 0;
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
