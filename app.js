@@ -64,6 +64,15 @@ function judge(p,now){
  }
 }
 
+// RAM BURPEE JUDGE — separate from the Thruster Judge
+let burpeePhase = 'ready';
+let burpeeLowSince = 0;
+let burpeeOverheadSince = 0;
+
+function judgeBurpee(p, now) {
+  // Burpee movement detection will be added here.
+  // The existing Thruster Judge remains unchanged.
+}
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
  $('squatFlash').classList.toggle('active',sq);$('squatLabel').classList.toggle('active',sq);
