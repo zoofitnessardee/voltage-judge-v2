@@ -111,10 +111,12 @@ const overhead = standing && leftArmOK && rightArmOK;
     hipAnkleGap < 0.22;
 
   if (horizontal) {
-    $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
-  } else {
-    $('tracking').textContent = 'RAM BURPEE: Move into bottom position';
-  }
+  $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
+} else if (overhead) {
+  $('tracking').textContent = 'RAM BURPEE: OVERHEAD DETECTED';
+} else {
+  $('tracking').textContent = 'RAM BURPEE: Move into bottom position';
+}
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
