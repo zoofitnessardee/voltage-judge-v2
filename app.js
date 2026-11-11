@@ -68,7 +68,8 @@ function judge(p,now){
 let burpeePhase = 'ready';
 let burpeeLowSince = 0;
 let burpeeOverheadSince = 0;
-
+let burpeePreviousBottom = false;
+let burpeePreviousOverhead = false;
 function judgeBurpee(p, now) {
   const side = $('viewMode').value === 'side';
 
@@ -110,12 +111,19 @@ const overhead = standing && leftArmOK && rightArmOK;
     shoulderHipGap < 0.18 &&
     hipAnkleGap < 0.22;
 
-  if (!session) {
-  burpeePhase = 'ready';
-  burpeeLowSince = 0;
-  burpeeOverheadSince = 0;
-}
 
+
+
+ 
+// RAM Burpee green position indicators
+if (horizontal && !burpeePreviousBottom) {
+  flashSquatUntil = now + 650;
+}
+if (overhead && !burpeePreviousOverhead) {
+  flashPressUntil = now + 650;
+}
+burpeePreviousBottom = horizontal;
+burpeePreviousOverhead = overhead;
 if (horizontal) {
   $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
 
