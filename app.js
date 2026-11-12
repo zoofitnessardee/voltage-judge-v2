@@ -203,7 +203,8 @@ if (!legsTracked) {
     const rightKneeGap = floorY - p[26].y;
 
     const kneeGap = Math.min(leftKneeGap, rightKneeGap);
-
+// Identify which knee is closest to the floor
+const lungeLeg = leftKneeGap < rightKneeGap ? 'left' : 'right';
     // Check that the legs are in a split stance
     const splitStance = Math.abs(p[27].x - p[28].x) > 0.15;
 
