@@ -174,6 +174,30 @@ if (burpeePhase === 'top' && horizontal) {
 if (!horizontal) burpeeLowSince = 0;
 if (!overhead) burpeeOverheadSince = 0;
 }
+// RAM LUNGE JUDGE — separate from Thruster and Burpee
+let lungePhase = 'ready';
+let lungeLastLeg = null;
+
+function judgeLunge(p, now) {
+    const side = $('viewMode').value === 'side';
+
+    if (!side) {
+        $('tracking').textContent =
+            'RAM LUNGE: Select side-facing view';
+        return;
+    }
+
+    const required = [23, 24, 25, 26, 27, 28];
+
+    if (!visible(p, required)) {
+        $('tracking').textContent =
+            'RAM LUNGE: Both legs must be visible';
+        return;
+    }
+
+    $('tracking').textContent =
+        'RAM LUNGE: Tracking legs';
+}
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
  $('squatFlash').classList.toggle('active',sq);$('squatLabel').classList.toggle('active',sq);
@@ -191,7 +215,7 @@ function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  ctx.strokeStyle='#4ade80';ctx.lineWidth=3/scale;ctx.beginPath();
  for(const edge of connections){const a=p[edge.start],b=p[edge.end];if(a&&b){ctx.moveTo(a.x*video.videoWidth,a.y*video.videoHeight);ctx.lineTo(b.x*video.videoWidth,b.y*video.videoHeight)}}ctx.stroke();
  ctx.fillStyle='#fbbf24';for(const pt of p){if(pt.visibility>.5){ctx.beginPath();ctx.arc(pt.x*video.videoWidth,pt.y*video.videoHeight,3/scale,0,Math.PI*2);ctx.fill()}}
- if($('exercise').value==='thruster'){   judge(p,now); }else if($('exercise').value==='burpee'){   judgeBurpee(p,now); }}catch(err){say('Tracking error: '+err.message)}}
+ if($('exercise').value==='thruster'){   judge(p,now); }else if($('exercise').value==='burpee'){   judgeBurpee(p,now); }else if($('exercise').value==='lunge'){     judgeLunge(p,now); }}catch(err){say('Tracking error: '+err.message)}}
 async function camera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;cancelAnimationFrame(raf);$('cameraBtn').textContent='Start camera';$('cameraState').textContent='Camera off';$('sessionBtn').disabled=true;stopSession();return}try{say('Loading pose model (internet needed on first use)…');if(!pose){if(!PoseLandmarker){const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/+esm');({PoseLandmarker,FilesetResolver,DrawingUtils}=vision)}const files=await FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');pose=await PoseLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task',delegate:'CPU'},runningMode:'VIDEO',numPoses:1,minPoseDetectionConfidence:.6,minPosePresenceConfidence:.6,minTrackingConfidence:.6})}stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:'user'},width:{ideal:1280},height:{ideal:720},frameRate:{ideal:24}}});video.srcObject=stream;await video.play();$('cameraBtn').textContent='Stop camera';$('cameraState').textContent='Camera on';$('sessionBtn').disabled=false;say('Camera ready — '+($('viewMode').value==='front'?'face the camera and stand tall to calibrate':'stand side-on to the camera'));render(performance.now())}catch(e){say('Camera/model error: '+e.message+' (HTTPS and camera permission required)')}}
 $('cameraBtn').onclick=camera;$('sessionBtn').onclick=()=>{if(!session){reset();session=true;$('cameraAngleTip').style.display='none';startMs=Date.now();$('sessionBtn').textContent='Stop session';log('session','started');say('Stand tall, squat to depth, then lock out overhead')}else {stopSession();updateCameraAngleTip()}};$('resetBtn').onclick=()=>{stopSession();reset();updateCameraAngleTip()};$('plusBtn').onclick=()=>{reps++;$('reps').textContent=reps;log('coach override','+1 valid')};$('minusBtn').onclick=()=>{reps=Math.max(0,reps-1);$('reps').textContent=reps;log('coach override','undo valid')};$('noBtn').onclick=()=>fault('coach override');$('target').onchange=()=>{$('targetDisplay').textContent=Math.max(1,Number($('target').value)||60)};$('exportBtn').onclick=()=>{const lines=[['timestamp','elapsed_seconds','event','detail'],...events.map(e=>[e.time,e.seconds,e.kind,e.detail])];const csv=lines.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='ram-judge-session.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
