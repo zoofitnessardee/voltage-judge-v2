@@ -103,7 +103,7 @@ const rightArmOK =
   p[16].y < p[12].y - 0.04 &&
   angle(p[12], p[14], p[16]) > 85;
 
-const overhead = standing && (leftArmOK || rightArmOK);  const shoulderHipGap = Math.abs(sh.y - hip.y);
+const overhead = standing && (ids === left ? leftArmOK : rightArmOK);  const shoulderHipGap = Math.abs(sh.y - hip.y);
   const hipAnkleGap = Math.abs(hip.y - ankle.y);
 
  const elbowAngle = angle(sh, el, wr);
