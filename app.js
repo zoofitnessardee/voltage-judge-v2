@@ -128,11 +128,11 @@ if (overhead && !burpeePreviousOverhead) {
 }
 burpeePreviousBottom = horizontal;
 burpeePreviousOverhead = overhead;
-// Allow another burpee after the previous overhead finish
-if (burpeePhase === 'top' && !overhead) {
-  burpeePhase = 'ready';
-  burpeeLowSince = 0;
-  burpeeOverheadSince = 0;
+// Allow another burpee when the athlete returns to the bottom
+if (burpeePhase === 'top' && horizontal) {
+    burpeePhase = 'ready';
+    burpeeLowSince = 0;
+    burpeeOverheadSince = 0;
 }
  if (horizontal) {
   $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
