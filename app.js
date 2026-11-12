@@ -124,7 +124,13 @@ if (overhead && !burpeePreviousOverhead) {
 }
 burpeePreviousBottom = horizontal;
 burpeePreviousOverhead = overhead;
-if (horizontal) {
+// Allow another burpee after the previous overhead finish
+if (burpeePhase === 'top' && !overhead) {
+  burpeePhase = 'ready';
+  burpeeLowSince = 0;
+  burpeeOverheadSince = 0;
+}
+ if (horizontal) {
   $('tracking').textContent = 'BURPEE BOTTOM POSITION DETECTED';
 
   if (session && burpeePhase === 'ready') {
