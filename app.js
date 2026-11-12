@@ -141,7 +141,7 @@ if (burpeePhase === 'top' && !overhead) {
   if (session && burpeePhase === 'ready') {
     if (!burpeeLowSince) burpeeLowSince = now;
 
-    if (now - burpeeLowSince > 150) {
+    if (now - burpeeLowSince > 80) {
       burpeePhase = 'low';
       burpeeLowSince = 0;
     }
@@ -152,7 +152,7 @@ if (burpeePhase === 'top' && !overhead) {
   if (session && burpeePhase === 'low') {
     if (!burpeeOverheadSince) burpeeOverheadSince = now;
 
-    if (now - burpeeOverheadSince > 150) {
+    if (now - burpeeOverheadSince > 80) {
       burpeePhase = 'top';
       burpeeOverheadSince = 0;
       count();
