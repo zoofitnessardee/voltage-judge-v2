@@ -215,7 +215,7 @@ if (!legsTracked) {
 
     // First test threshold — we will calibrate this
     const bottomDetected =
-        splitStance && kneeGap >= 0 && kneeGap < 0.12;
+        splitStance && kneeGap >= 0 && kneeGap < 0.07;
 
     if (bottomDetected) {
         $('tracking').textContent =
