@@ -275,9 +275,24 @@ async function camera(){if(stream){stream.getTracks().forEach(t=>t.stop());strea
 $('cameraBtn').onclick=camera;$('sessionBtn').onclick=()=>{if(!session){reset();session=true;$('cameraAngleTip').style.display='none';startMs=Date.now();$('sessionBtn').textContent='Stop session';log('session','started');say('Stand tall, squat to depth, then lock out overhead')}else {stopSession();updateCameraAngleTip()}};$('resetBtn').onclick=()=>{stopSession();reset();updateCameraAngleTip()};$('plusBtn').onclick=()=>{reps++;$('reps').textContent=reps;log('coach override','+1 valid')};$('minusBtn').onclick=()=>{reps=Math.max(0,reps-1);$('reps').textContent=reps;log('coach override','undo valid')};$('noBtn').onclick=()=>fault('coach override');$('target').onchange=()=>{$('targetDisplay').textContent=Math.max(1,Number($('target').value)||60)};$('exportBtn').onclick=()=>{const lines=[['timestamp','elapsed_seconds','event','detail'],...events.map(e=>[e.time,e.seconds,e.kind,e.detail])];const csv=lines.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='ram-judge-session.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 function updateCameraAngleTip() {
-  const exercise = $('exercise').value;
-  const showTip = !session && (exercise === 'burpee' || exercise === 'lunge');
-  $('cameraAngleTip').style.display = showTip ? 'block' : 'none';
+    const exercise = $('exercise').value;
+    const showTip = !session && (exercise === 'burpee' || exercise === 'lunge');
+
+    $('cameraAngleTip').style.display = showTip ? 'block' : 'none';
+
+    if (exercise === 'lunge') {
+        $('cameraAngleTip').innerHTML =
+            '📷 CAMERA POSITION: 90° SIDE VIEW' +
+            '<div style="font-size:13px;font-weight:normal;margin-top:5px;">' +
+            'Position the athlete completely side-on to the camera.' +
+            '</div>';
+    } else if (exercise === 'burpee') {
+        $('cameraAngleTip').innerHTML =
+            '📷 CAMERA POSITION: 20–30° ANGLE' +
+            '<div style="font-size:13px;font-weight:normal;margin-top:5px;">' +
+            'Position the athlete slightly angled towards the camera, not perfectly side-on.' +
+            '</div>';
+    }
 }
 
 $('exercise').addEventListener('change', updateCameraAngleTip);
