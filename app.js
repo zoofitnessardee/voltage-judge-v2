@@ -177,7 +177,7 @@ if (!overhead) burpeeOverheadSince = 0;
 // RAM LUNGE JUDGE — separate from Thruster and Burpee
 let lungePhase = 'ready';
 let lungeLastLeg = null;
-
+let lungeCurrentLeg = null;
 function judgeLunge(p, now) {
        const front = $('viewMode').value === 'front';
 
@@ -236,13 +236,21 @@ if (bottomDetected) {
  // Count one rep after reaching the bottom and returning to standing
 if (session) {
     if (bottomDetected && lungePhase === 'ready') {
-        lungePhase = 'bottom';
-    }
+    lungeCurrentLeg = lungeLeg;
+    lungePhase = 'bottom';
+}
 
     if (standing && lungePhase === 'bottom') {
-        lungePhase = 'ready';
+    lungePhase = 'ready';
+
+    if (lungeLastLeg === null || lungeCurrentLeg !== lungeLastLeg) {
         count();
+        lungeLastLeg = lungeCurrentLeg;
+    } else {
+        $('tracking').textContent =
+            'RAM LUNGE: ALTERNATE LEGS — NO REP';
     }
+}
 }
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
