@@ -45,16 +45,24 @@ body{padding:0}main{max-width:none}header{padding:8px 12px}.brand img{width:clam
   border-radius: 10px;
   cursor: pointer;
 }
-/* Raise scoreboard above coach override buttons */
+/* Camera-angle reminder above Start Session */
+.stage #cameraAngleTip {
+  position: absolute;
+  z-index: 20;
+  left: 10%;
+  right: 10%;
+  top: 24%;
+}
+  /* Raise scoreboard above coach override buttons */
 .stage .scoreboard {
   bottom: 95px !important;
 }
-</style></head><body><main><header><div class="brand"><div><img src="voltage-logo.png" alt="Voltage studio logo"><div class="brand-caption">RAM THRUSTER JUDGE</div><div class="muted">Single-athlete training prototype · beta</div></div></div><span id="cameraState" class="muted">Camera off</span></header><div class="layout"><section><div class="stage"><video id="video" playsinline autoplay muted></video><canvas id="canvas"></canvas><div id="pressFlash" class="half top"></div><div id="squatFlash" class="half bottom"></div><div id="pressLabel" class="half-label">PRESS APPROVED</div><div id="squatLabel" class="half-label">SQUAT APPROVED</div><div class="scoreboard" aria-live="polite"><div class="score-title">VALID REPS</div><div class="score-line"><span id="reps">0</span><span><small>/ <span id="targetDisplay">60</span></small></span><span id="noReps" style="display:none">0</span></div><div id="timer">00:00</div></div><div class="overlay" id="tracking">Waiting for camera</div> <div class="camera-rep-buttons">   <button id="minusBtn">−1 REP</button>   <button id="plusBtn">+1 REP</button> </div></div><div class="status" id="status" aria-live="polite">Start camera to begin.</div><div id="cameraAngleTip" style="display:none; text-align:center; padding:12px; margin:10px 0; border:2px solid #b6ff43; border-radius:10px; color:#b6ff43; font-weight:bold;">
+</style></head><body><main><header><div class="brand"><div><img src="voltage-logo.png" alt="Voltage studio logo"><div class="brand-caption">RAM THRUSTER JUDGE</div><div class="muted">Single-athlete training prototype · beta</div></div></div><span id="cameraState" class="muted">Camera off</span></header><div class="layout"><section><div class="stage"><div id="cameraAngleTip" style="display:none; text-align:center; padding:12px; margin:10px 0; border:2px solid #b6ff43; border-radius:10px; color:#b6ff43; font-weight:bold; background:rgba(0,0,0,0.85);">
   📷 CAMERA POSITION: 20–30° ANGLE
   <div style="font-size:13px; font-weight:normal; margin-top:5px;">
     Position the athlete slightly angled towards the camera, not perfectly side-on.
   </div>
-</div>
+</div><video id="video" playsinline autoplay muted></video><canvas id="canvas"></canvas><div id="pressFlash" class="half top"></div><div id="squatFlash" class="half bottom"></div><div id="pressLabel" class="half-label">PRESS APPROVED</div><div id="squatLabel" class="half-label">SQUAT APPROVED</div><div class="scoreboard" aria-live="polite"><div class="score-title">VALID REPS</div><div class="score-line"><span id="reps">0</span><span><small>/ <span id="targetDisplay">60</span></small></span><span id="noReps" style="display:none">0</span></div><div id="timer">00:00</div></div><div class="overlay" id="tracking">Waiting for camera</div> <div class="camera-rep-buttons">   <button id="minusBtn">−1 REP</button>   <button id="plusBtn">+1 REP</button> </div></div><div class="status" id="status" aria-live="polite">Start camera to begin.</div>
 <div class="controls"><button class="primary" id="cameraBtn">Start camera</button><button class="primary" id="sessionBtn" disabled>Start session</button><button id="resetBtn">Reset counts</button><button id="noBtn" style="display:none">+1 no-rep</button></div></section><aside><div class="card"><h2 style="margin-top:0">Voltage Judge Settings</h2><div class="settings"><label>Judging view <select id="viewMode"><option value="front">Front-facing (studio)</option><option value="side">Side-facing (depth check)</option></select></label><label>Depth standard <select id="depth"><option value="parallel">Parallel (training)</option><option value="below">Below parallel (training)</option></select></label><label>Target <input id="target" type="number" min="1" max="500" value="60" style="width:90px"></label><label>Exercise
   <select id="exercise">
     <option value="thruster">RAM Thruster</option>
