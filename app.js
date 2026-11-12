@@ -189,11 +189,17 @@ function judgeLunge(p, now) {
 
     const required = [23, 24, 25, 26, 27, 28];
 
-    if (!visible(p, required)) {
-        $('tracking').textContent =
-            'RAM LUNGE: Both legs must be visible';
-        return;
-    }
+const legsTracked = required.every(i =>
+    p[i] &&
+    Number.isFinite(p[i].x) &&
+    Number.isFinite(p[i].y)
+);
+
+if (!legsTracked) {
+    $('tracking').textContent =
+        'RAM LUNGE: Legs not tracked';
+    return;
+}
 
     // Estimate the floor using the lower ankle position
     const floorY = Math.max(p[27].y, p[28].y);
