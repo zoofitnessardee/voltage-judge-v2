@@ -81,8 +81,18 @@ function judgeBurpee(p, now) {
   const left = [11, 13, 15, 23, 25, 27];
   const right = [12, 14, 16, 24, 26, 28];
 
-  const ids = visible(p, left) ? left :
-              visible(p, right) ? right : null;
+  const leftVisible = visible(p, left);
+const rightVisible = visible(p, right);
+
+const visibilityScore = (side) =>
+    side.reduce((total, i) => total + (p[i]?.visibility ?? 0), 0);
+
+const ids =
+    leftVisible && rightVisible
+        ? (visibilityScore(left) >= visibilityScore(right) ? left : right)
+        : leftVisible ? left
+        : rightVisible ? right
+        : null;
 
   if (!ids) {
     $('tracking').textContent = 'RAM BURPEE: Full body not visible';
