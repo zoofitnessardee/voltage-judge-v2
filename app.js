@@ -211,14 +211,26 @@ if (!legsTracked) {
     const bottomDetected =
         splitStance && kneeGap >= 0 && kneeGap < 0.07;
 
-    if (bottomDetected) {
-        $('tracking').textContent =
-            'RAM LUNGE: KNEE DEPTH DETECTED';
-        flashSquatUntil = now + 250;
-    } else {
-        $('tracking').textContent =
-            'RAM LUNGE: Move into bottom position';
-    }
+ // Check whether both legs have straightened
+const leftKneeAngle = angle(p[23], p[25], p[27]);
+const rightKneeAngle = angle(p[24], p[26], p[28]);
+
+const standing =
+    leftKneeAngle > 155 &&
+    rightKneeAngle > 155 &&
+    !splitStance;
+
+if (bottomDetected) {
+    $('tracking').textContent =
+        'RAM LUNGE: KNEE DEPTH DETECTED';
+    flashSquatUntil = now + 250;
+} else if (standing) {
+    $('tracking').textContent =
+        'RAM LUNGE: STANDING DETECTED';
+} else {
+    $('tracking').textContent =
+        'RAM LUNGE: Move into bottom position';
+}
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
