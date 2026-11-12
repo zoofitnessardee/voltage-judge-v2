@@ -233,6 +233,17 @@ if (bottomDetected) {
     $('tracking').textContent =
         'RAM LUNGE: Move into bottom position';
 }
+ // Count one rep after reaching the bottom and returning to standing
+if (session) {
+    if (bottomDetected && lungePhase === 'ready') {
+        lungePhase = 'bottom';
+    }
+
+    if (standing && lungePhase === 'bottom') {
+        lungePhase = 'ready';
+        count();
+    }
+}
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
