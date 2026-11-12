@@ -179,13 +179,7 @@ let lungePhase = 'ready';
 let lungeLastLeg = null;
 
 function judgeLunge(p, now) {
-    const side = $('viewMode').value === 'side';
-
-    if (!side) {
-        $('tracking').textContent =
-            'RAM LUNGE: Select side-facing view';
-        return;
-    }
+       const front = $('viewMode').value === 'front';
 
     const required = [23, 24, 25, 26, 27, 28];
 
