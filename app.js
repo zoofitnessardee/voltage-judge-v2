@@ -108,8 +108,10 @@ const overhead = standing && leftArmOK && rightArmOK;
   const hipAnkleGap = Math.abs(hip.y - ankle.y);
 
   const horizontal =
-    shoulderHipGap < 0.18 &&
-    hipAnkleGap < 0.22;
+  shoulderHipGap < 0.18 &&
+  hipAnkleGap < 0.22 &&
+  Math.abs(sh.x - ankle.x) > 0.35 &&
+  Math.abs(sh.x - hip.x) > 0.12;
 
 
 
