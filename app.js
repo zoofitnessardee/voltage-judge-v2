@@ -227,6 +227,7 @@ if (bottomDetected) {
 } else if (standing) {
     $('tracking').textContent =
         'RAM LUNGE: STANDING DETECTED';
+    flashPressUntil = now + 250;
 } else {
     $('tracking').textContent =
         'RAM LUNGE: Move into bottom position';
