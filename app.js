@@ -195,8 +195,30 @@ function judgeLunge(p, now) {
         return;
     }
 
-    $('tracking').textContent =
-        'RAM LUNGE: Tracking legs';
+    // Estimate the floor using the lower ankle position
+    const floorY = Math.max(p[27].y, p[28].y);
+
+    // Identify the knee closest to the estimated floor
+    const leftKneeGap = floorY - p[25].y;
+    const rightKneeGap = floorY - p[26].y;
+
+    const kneeGap = Math.min(leftKneeGap, rightKneeGap);
+
+    // Check that the legs are in a split stance
+    const splitStance = Math.abs(p[27].x - p[28].x) > 0.15;
+
+    // First test threshold — we will calibrate this
+    const bottomDetected =
+        splitStance && kneeGap >= 0 && kneeGap < 0.12;
+
+    if (bottomDetected) {
+        $('tracking').textContent =
+            'RAM LUNGE: KNEE DEPTH DETECTED';
+        flashSquatUntil = now + 250;
+    } else {
+        $('tracking').textContent =
+            'RAM LUNGE: Move into bottom position';
+    }
 }
 function render(now){if(!stream)return;raf=requestAnimationFrame(render);
  const sq=now<flashSquatUntil,pr=now<flashPressUntil;
