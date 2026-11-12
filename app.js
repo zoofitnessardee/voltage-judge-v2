@@ -97,11 +97,11 @@ const standing = kneeAngle > 145;
 
 const leftArmOK =
   p[15].y < p[11].y - 0.04 &&
-  angle(p[11], p[13], p[15]) > 95;
+  angle(p[11], p[13], p[15]) > 85;
 
 const rightArmOK =
   p[16].y < p[12].y - 0.04 &&
-  angle(p[12], p[14], p[16]) > 95;
+  angle(p[12], p[14], p[16]) > 85;
 
 const overhead = standing && (leftArmOK || rightArmOK);  const shoulderHipGap = Math.abs(sh.y - hip.y);
   const hipAnkleGap = Math.abs(hip.y - ankle.y);
